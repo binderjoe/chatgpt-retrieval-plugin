@@ -1,0 +1,46 @@
+{
+    "name": "Azure Developer CLI",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "VARIANT": "bullseye",
+            "VERSION": "3.10"
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-from-docker:1": {
+            "version": "20.10"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "2"
+        },
+        "ghcr.io/devcontainers-contrib/features/poetry": {
+            "version": "1.4.1"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.azure-dev",
+                "ms-azuretools.vscode-bicep",
+                "ms-azuretools.vscode-docker",
+                "ms-vscode.vscode-node-azure-pack",
+                "ms-vscode.js-debug",
+                "esbenp.prettier-vscode",
+                "eg2.vscode-npm-script",
+                "dbaeumer.vscode-eslint",
+                "ms-azuretools.vscode-azurefunctions"
+            ]
+        }
+    },
+    "forwardPorts": [
+        6379,
+        8000
+    ],
+    // "postAttachCommand": "chmod +x /postattachcommand.sh && /.devcontainer/postattachcommand.sh",
+    "postAttachCommand": "poetry env use python3.10 && poetry install --no-root && export DATASTORE=redis && export BEARER_TOKEN=footoken && export OPENAI_API_KEY='source .env' && docker compose -f ./examples/docker/redis/docker-compose.yml up -d",
+    "remoteUser": "vscode",
+    "hostRequirements": {
+        "memory": "8gb"
+    }
+}
